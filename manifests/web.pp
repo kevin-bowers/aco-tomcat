@@ -9,6 +9,7 @@ define tomcat::web (
   $jsp_servlet_params                 = {},
   $default_servletmapping_urlpatterns = [],
   $jsp_servletmapping_urlpatterns     = [],
+  $sessionconfig_custom_config        = undef,
   $sessionconfig_sessiontimeout       = undef,
   $sessionconfig_trackingmode         = undef,
   $welcome_file_list                  = [],
@@ -101,7 +102,7 @@ define tomcat::web (
   # Template uses:
   # - $sessionconfig_sessiontimeout
   # - $sessionconfig_trackingmode
-  if ($sessionconfig_sessiontimeout and $sessionconfig_sessiontimeout != '') or ($sessionconfig_trackingmode and $sessionconfig_trackingmode != '') {
+  if ($sessionconfig_sessiontimeout and $sessionconfig_sessiontimeout != '') or ($sessionconfig_trackingmode and $sessionconfig_trackingmode != '') or ($sessionconfig_custom_config != ''){
     concat::fragment { "${name} tomcat web session-config":
       order   => 040,
       content => template("${module_name}/common/web.xml/040_sessionconfig.erb"),
@@ -141,3 +142,4 @@ define tomcat::web (
     target  => "${name} tomcat web"
   }
 }
+
